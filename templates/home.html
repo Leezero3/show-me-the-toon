@@ -70,9 +70,9 @@
         }
     </style>
     <script>
-           $(document).ready(function () {  //페이지 로딩 되면 listing 함수 실행
-            listing();
-            // let rows;
+           $(document).ready(function () {  
+            listing();    //페이지 로딩 되면 listing 함수 실행
+            let rows;
         });
 
         function listing() {  
@@ -84,37 +84,19 @@
                    
                     let img = a['image']
                     let title = a['title']
-                    let description = a['desc']                 
+                    let description = a['desc']              
                     
 
                     let temp_html =`<div class="card">
                                         <img src="${img}" /> <!--이미지 -->
                                         <h5 class="toontitle">>${title}</h5>
                                         <p class="summary">${description}</p>
-                                        <button class="viewbutton" onclick = 'window.location.href = "/toon"' >리뷰보기</button>
-                                    </div>`
-                                                    
-                    
-                    // `<div class="col">
-                    //                     <div class="card h-100">
-                    //                         <img src="${img}"
-                    //                             class="card-img-top">
-                    //                         <div class="card-body">
-                    //                             <h5 class="card-title">${tit}</h5>
-                    //                             <p class="card-text">${dsc}</p>
-                    //                             <p>${star_image}</p>
-                    //                             <p class="mycomment">${commt}</p>
-                    //                             <button type="button" class="btn btn-outline-secondary" onclick="amend_open('${a['_id']}')">수정</button>
-                    //                             <button onclick="dele('${a['_id']}')" type="button" class="btn btn-outline-secondary" >삭제</button>
-                    //                         </div>
-                    //                     </div>
-                    //                 </div>`
-                    $('#cards-box').append(temp_html)                                            
+                                        <button class="viewbutton" onclick = 'window.location.href = "/toon?id=${a['_id']}"'>리뷰보기</button>
+                                    </div>`                                                                    
+                    $('#cards-box').append(temp_html)     //메인페이지에 리뷰버튼 _id값뒤에 반영                                     
                 })                
             })                     
         }
-
-
 
     </script>
 
