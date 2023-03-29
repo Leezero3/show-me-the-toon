@@ -182,24 +182,24 @@
         
         //////////////삭제 function//////////
 
-        function delete(_id, pw) {         
-                        
+        // function delete() {         
+                        //_id, pw 입력
             // console.log(_id, pw)
 
-            let formData = new FormData();
-            formData.append('comment_id_give', _id);
-            formData.append('pw_give', pw);
+            // let formData = new FormData();
+            // formData.append('comment_id_give', _id);
+            // formData.append('pw_give', pw);
 
-            fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+            // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
 
-                if(data['msg'] == 'pw가 일치하지 않습니다.'){
-                    alert(data['msg'])
-                }else{
-                    alert(data['msg'])
-                window.location.reload()
-                }                            
-            })
-        }
+            //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
+            //         alert(data['msg'])
+            //     }else{
+            //         alert(data['msg'])
+            //     window.location.reload()
+            //     }                            
+            // })
+        // }
         ///////////////////////
 
 
