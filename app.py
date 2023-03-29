@@ -28,11 +28,15 @@ def comment_del():
     else:
         #  print("pw가 일치하지 않습니다.")
          return jsonify({'msg':'pw가 일치하지 않습니다.'})    
-#######################################################################
+####################메인화면 시작하면 보내는 GET#####################################
 
-@app.route("/review", methods=["GET"])
-def movie_get():
-    return jsonify({'msg':'GET 연결 완료!'})
+@app.route("/webtoon", methods=["GET"])
+def webtoon_get():
+    webtoon_lists = list(db.webtoon.find({}))      #webtoon 이란 이름의 DB에 저장된 것들 메인페이지로
+    for mv in webtoon_lists:
+        mv["_id"] = str(mv["_id"])  #이렇게 하니 id 값도 넘어감
+    return jsonify({'result':webtoon_lists})
+#########################################################################
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5001, debug=True)
