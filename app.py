@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 from pymongo import MongoClient
+from bson import json_util
 import certifi
 from bson.objectid import ObjectId
-
+client = MongoClient('mongodb+srv://sparta:test@cluster0.fjodnaz.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.dbsparta
 
 @app.route('/')
@@ -25,7 +26,7 @@ def comment_del():
     # print(del_pw) 
     find_one = db.comment.find_one({'_id': ObjectId(del_id),'pw':del_pw})  #comment 이름의 DB에서 Id, pw값일치하는 것 찾기
 
-    # print(find_one) 
+    # print(find_one) x
 
     if (None != find_one):    #Id값과 pw 확인하여 하나라도 다르면 None이 출력. -> else문으로.           
         db.comment.delete_one({'_id': ObjectId(del_id),'pw':del_pw})  
@@ -50,6 +51,19 @@ def tooncomment_get():
     # for mv in toon_lists:
     #     mv["_id"] = str(mv["_id"])  #이렇게 하니 id 값도 넘어감
     # return jsonify({'result':tooncommnet_list})
+
+
+
+@app.route("/toonrender", methods=["POST"])
+def toon_get():
+    objectId = request.form['objectId_give']
+    toon = db.toons.find_one({'_id':ObjectId(objectId)})
+    print(toon)
+    # return jsonify(json_util.dumps({'result':toon}))
+    return json_util.dumps(toon)
+
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5001, debug=True)

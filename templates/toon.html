@@ -76,9 +76,11 @@
             flex-direction: column;
             align-items: center;
         }
-        .toon-frame{
+
+        .toon-frame {
             box-shadow: 0px 0px 1px 0px gray;
             margin: 40px 10px 0px auto;
+            
         }
 
         .toon-card {
@@ -90,6 +92,10 @@
             width: 900px;
             max-width: 1300px;
             padding: 20px;
+        }
+
+        .toon-explain{
+            width: 270px;
         }
 
         .card-body {
@@ -110,7 +116,7 @@
             margin: 10px 10px 10px 10px;
         }
 
-        .comment-button{
+        .comment-button {
             width: 100px;
             height: 30px;
             background-color: transparent;
@@ -160,59 +166,93 @@
     </style>
     <script>
         $(document).ready(function () {
-            listing();    //페이지 로딩 되면 listing 함수 실행
-            let rows;
-            console.log(rows)
+            posting();
+            // listing();
+            //페이지 로딩 되면 listing 함수 실행
+            //let rows;
+            //console.log(rows)
         });
+        function posting() {
+            // console.log(window.location.search)
+            let str = window.location.search
+            // let objectId = str.slice(1).toString();
+            let objectId = str.slice(1);
+            // console.log(objectId)
 
-        function listing() {
+            let formData = new FormData();
+            formData.append("objectId_give", objectId);
 
-            console.log(window.location.search)
+            fetch('/toonrender', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                // alert(data['result'])
+                console.log(data)
+                $('#card-box').empty()
+                let title = data['title']
+                let image = data['img']
+                let desc = data['desc']
+                let temp_html = `<div class="toon-card">
+                                    <img src=${image}
+                                        class="img-fluid card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h3 class="card-title">${title}</h3>
+                                        <p class="toon-explain">${desc}</p>
+                                    </div>
+                                </div>`
+                $('#card-box').append(temp_html)
+            })
 
-            // function delete() {         
-                        //_id, pw 입력
-            // console.log(_id, pw)
+        }
 
-            // let formData = new FormData();
-            // formData.append('comment_id_give', _id);
-            // formData.append('pw_give', pw);
 
-            // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
 
-            //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
-            //         alert(data['msg'])
-            //     }else{
-            //         alert(data['msg'])
-            //     window.location.reload()
-            //     }                            
-            // })
+
+
+
+
+
+        // function delete() {         
+        //_id, pw 입력
+        // console.log(_id, pw)
+
+        // let formData = new FormData();
+        // formData.append('comment_id_give', _id);
+        // formData.append('pw_give', pw);
+
+        // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+
+        //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
+        //         alert(data['msg'])
+        //     }else{
+        //         alert(data['msg'])
+        //     window.location.reload()
+        //     }                            
+        // })
         // }
 
-            // fetch('/tooncomment').then((res) => res.json()).then((data) => {
-            //     rows = data['result']
-            //     $('#cards-box').empty()
+        // fetch('/tooncomment').then((res) => res.json()).then((data) => {
+        //     rows = data['result']
+        //     $('#cards-box').empty()
 
-            //     rows.forEach((a) => {
-            //         console.log(a)
-            //         console.log('aaaaaaaaaa')
-            //         let img = a['img']
-            //         let title = a['title']
-            //         let description = a['desc']
-            //         let toonId = a['_id']
-            //         fetch('/toonId_get', { method: "POST", body: toonId, }).then((res) => res.json()).then((data) => {
-            //         });
-                    
+        //     rows.forEach((a) => {
+        //         console.log(a)
+        //         console.log('aaaaaaaaaa')
+        //         let img = a['img']
+        //         let title = a['title']
+        //         let description = a['desc']
+        //         let toonId = a['_id']
+        //         fetch('/toonId_get', { method: "POST", body: toonId, }).then((res) => res.json()).then((data) => {
+        //         });
 
-            //         let temp_html = `<div class="card">
-            //                             <img src="${img}" /> <!--이미지 -->
-            //                             <h5 class="toontitle">>${title}</h5>
-            //                             <p class="summary">${description}</p>
-            //                             <button class="viewbutton" onclick = 'window.location.href = "/toon?id=${a['_id']}"'>리뷰보기</button>
-            //                         </div>`
-            //         $('#cards-box').append(temp_html)     //메인페이지에 리뷰버튼 _id값뒤에 반영                                     
-            //     })
-            // })
-        }
+
+        //         let temp_html = `<div class="card">
+        //                             <img src="${img}" /> <!--이미지 -->
+        //                             <h5 class="toontitle">>${title}</h5>
+        //                             <p class="summary">${description}</p>
+        //                             <button class="viewbutton" onclick = 'window.location.href = "/toon?id=${a['_id']}"'>리뷰보기</button>
+        //                         </div>`
+        //         $('#cards-box').append(temp_html)     //메인페이지에 리뷰버튼 _id값뒤에 반영                                     
+        //     })
+        // })
+
 
 
 
@@ -228,36 +268,36 @@
         //         alert(data['msg'])
         //     })
         // }
-    
-        function posting() {
-            let formData = new FormData();
-            formData.append("sample_give", "샘플데이터");
 
-            fetch('/review', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-                // console.log(data)
-                alert(data['msg'])
-            })
-        }
-        
+        // function posting() {
+        //     let formData = new FormData();
+        //     formData.append("sample_give", "샘플데이터");
+
+        //     fetch('/review', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+        //         // console.log(data)
+        //         alert(data['msg'])
+        //     })
+        // }
+
         //////////////삭제 function////////// ----------------------------체크!
 
         // function delete() {         
-                        //_id, pw 입력
-            // console.log(_id, pw)
+        //_id, pw 입력
+        // console.log(_id, pw)
 
-            // let formData = new FormData();
-            // formData.append('comment_id_give', _id);
-            // formData.append('pw_give', pw);
+        // let formData = new FormData();
+        // formData.append('comment_id_give', _id);
+        // formData.append('pw_give', pw);
 
-            // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+        // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
 
-            //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
-            //         alert(data['msg'])
-            //     }else{
-            //         alert(data['msg'])
-            //     window.location.reload()
-            //     }                            
-            // })
+        //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
+        //         alert(data['msg'])
+        //     }else{
+        //         alert(data['msg'])
+        //     window.location.reload()
+        //     }                            
+        // })
         // }
         ///////////////////////
 
@@ -269,11 +309,11 @@
             $('#post-box').hide()
         }
 
-        function pw_check(){
+        function pw_check() {
             $('#delete-box').show()
         }
 
-        function close_box2(){
+        function close_box2() {
             $('#delete-box').hide()
         }
 
@@ -311,56 +351,57 @@
         </div>
     </div>
 
-<!-- ////////////////////////삭제하기 버튼 누르면 PW확인창////////////////////////////////////// -->
-<div class="mypost2" id="delete-box">
-     
-    <div class="input-group input-group-sm mb-3">
-        <span class="input-group-text" id="inputGroup-sizing-sm">PW를 입력하세요</span>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-      </div>
-      
-    <div class="mybtns">           
-        <!-- <button onclick="delete()" type="button" class="btn btn-light">삭제하기</button>  -->
-        <button onclick="close_box2()" type="button" class="btn btn-outline-dark">취소</button>
-    </div>   
-</div>
- <!--///////////////  onclick="delete('${a['_id']}','${a['pw']}')" 가 되어야함 ///////////////////-->
+    <!-- ////////////////////////삭제하기 버튼 누르면 PW확인창////////////////////////////////////// -->
+    <div class="mypost2" id="delete-box">
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-sm">PW를 입력하세요</span>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-sm">
+        </div>
+
+        <div class="mybtns">
+            <!-- <button onclick="delete()" type="button" class="btn btn-light">삭제하기</button>  -->
+            <button onclick="close_box2()" type="button" class="btn btn-outline-dark">취소</button>
+        </div>
+    </div>
+    <!--///////////////  onclick="delete('${a['_id']}','${a['pw']}')" 가 되어야함 ///////////////////-->
 
 
     <div class="page-frame">
-        <div class="toon-frame">
+        <div class="toon-frame" id="card-box">
             <div class="toon-card">
                 <img src="https://image-comic.pstatic.net/webtoon/796152/thumbnail/thumbnail_IMAG21_26b9c1d8-ca2d-4fc7-87ea-a3334634236a.jpg"
                     class="img-fluid card-img-top" alt="...">
                 <div class="card-body">
                     <h3 class="card-title">마루는 강쥐</h3>
-                    <p class="card-text">여기에 영화에 대한 설명이 들어갑니다.</p>
+                    <p class="toon-explain">여기에 영화에 대한 설명이 들어갑니다.</p>
                 </div>
             </div>
         </div>
         <div class="mycards">
             <div class="card mb-4" id="cards-box">
                 <!-- <div class="row"> -->
-                    <div class="card-context col">
-                        <div class="card-body">
-                            <p class="card-text">닉네임 : </p>
-                            <p class="card-text">별점 : </p>
-                            <p class="card-text">리뷰 : </p>
-                            
-                            <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
-                        </div>
-                        <div class="comment-button-group md-2">
-                            <button onclick ="pw_check()" class="comment-button">삭제하기</button>
-                            <button class="comment-button">수정하기</button>
-                        </div>
+                <div class="card-context col">
+                    <div class="card-body">
+                        <p class="card-text">닉네임 : </p>
+                        <p class="card-text">별점 : </p>
+                        <p class="card-text">리뷰 : </p>
+
+                        <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                     </div>
+                    <div class="comment-button-group md-2">
+                        <button onclick="pw_check()" class="comment-button">삭제하기</button>
+                        <button class="comment-button">수정하기</button>
+                    </div>
+                </div>
                 <!--/////이것까지 전부 마지막에 temp_html로 하고 append해야할듯///// -->
                 <div id="cards-box"></div>
             </div>
         </div>
     </div>
     </div>
-    
+
 </body>
 
 </html>
