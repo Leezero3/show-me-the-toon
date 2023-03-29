@@ -17,25 +17,23 @@ def comment_del():
 
     # print(del_id)   
     # print(del_pw) 
-    find_one = db.comment.find_one({'_id': ObjectId(del_id),'pw':del_pw})
+    find_one = db.comment.find_one({'_id': ObjectId(del_id),'pw':del_pw})  #comment 이름의 DB에서 Id, pw값일치하는 것 찾기
 
-    # print(find_one)
+    # print(find_one) 
 
-    if (None != find_one):       
-        # print("PW가 일치합니다.")
-        db.comment.delete_one({'_id': ObjectId(del_id),'pw':del_pw})
+    if (None != find_one):    #Id값과 pw 확인하여 하나라도 다르면 None이 출력. -> else문으로.           
+        db.comment.delete_one({'_id': ObjectId(del_id),'pw':del_pw})  
         return jsonify({'msg':'삭제완료'})
-    else:
-        #  print("pw가 일치하지 않습니다.")
+    else:        
          return jsonify({'msg':'pw가 일치하지 않습니다.'})    
 ####################메인화면 시작하면 보내는 GET#####################################
 
 @app.route("/webtoon", methods=["GET"])
 def webtoon_get():
-    webtoon_lists = list(db.webtoon.find({}))      #webtoon 이란 이름의 DB에 저장된 것들 메인페이지로
-    for mv in webtoon_lists:
+    toon_lists = list(db.toon.find({}))      #toon 이란 이름의 DB에 저장된 것들 메인페이지로
+    for mv in toon_lists:
         mv["_id"] = str(mv["_id"])  #이렇게 하니 id 값도 넘어감
-    return jsonify({'result':webtoon_lists})
+    return jsonify({'result':toon_lists})
 #########################################################################
 
 if __name__ == '__main__':
