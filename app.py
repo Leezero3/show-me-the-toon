@@ -9,12 +9,24 @@ def home():
 def review():
     return render_template('toon.html')
 
+from pymongo import MongoClient
+import certifi
+client = MongoClient('mongodb+srv://sparta:test@cluster0.fjodnaz.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
+db = client.dbsparta
+
+# from bs4 import BeautifulSoup
+
 
 # ===========
 
-@app.route("/review", methods=["GET"])
-def movie_get():
-    return jsonify({'msg':'GET 연결 완료!'})
+@app.route("/webtoon", methods=["GET"])
+def webtoon_get():
+    all_webtoons = list(db.movies.find({},{}))
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    print(all_webtoons)
+    # all_movies = list(db.movies.find({},{'_id':False}))
+    return jsonify({'result':all_webtoons})
+    
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5001, debug=True)
