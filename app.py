@@ -1,13 +1,19 @@
 from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
+from pymongo import MongoClient
+import certifi
+from bson.objectid import ObjectId
+
+db = client.dbsparta
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/toon')
-def review():
+@app.route('/toon' )
+def review():    
     return render_template('toon.html')
+
 ##################################################################
 @app.route("/review:commentid", methods=["POST"])
 def comment_del():
@@ -30,11 +36,20 @@ def comment_del():
 
 @app.route("/webtoon", methods=["GET"])
 def webtoon_get():
-    toon_lists = list(db.toon.find({}))      #toon 이란 이름의 DB에 저장된 것들 메인페이지로
+    toon_lists = list(db.toons.find({}))      #toon 이란 이름의 DB에 저장된 것들 메인페이지로
     for mv in toon_lists:
         mv["_id"] = str(mv["_id"])  #이렇게 하니 id 값도 넘어감
     return jsonify({'result':toon_lists})
 #########################################################################
+
+@app.route("/tooncomment", methods=["GET"])
+def tooncomment_get():
+    tooncommnet_list = db.toons.find_one({'name':'bobby'})
+
+    # toon_lists = list(db.toons.find({}))      #toon 이란 이름의 DB에 저장된 것들 메인페이지로
+    # for mv in toon_lists:
+    #     mv["_id"] = str(mv["_id"])  #이렇게 하니 id 값도 넘어감
+    # return jsonify({'result':tooncommnet_list})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5001, debug=True)

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>쇼미더무비</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
@@ -31,6 +32,14 @@
             /* background-position: center; */
             background-size: cover;
         }
+
+        .card-box {
+            margin: auto;
+            /* display: flex; */
+            /* align-items: center; */
+            /* justify-content: center; */
+        }
+
         .card {
             /* background-color: green; */
             border: 3px solid grey;
@@ -45,62 +54,71 @@
             align-items: center;
             /* justify-content: center; */
         }
-        .card > img {
+
+        .card>img {
             border: 5px solid white;
             margin-left: 230px;
             width: 150px;
             height: 150px;
         }
+
         .toontitle {
             border: 3px white;
             width: 200px;
             margin-left: 20px;
-            
+
         }
+
         .summary {
             border: 3px white;
             width: 400px;
             margin-left: 20px;
         }
+
         .viewbutton {
             width: 130px;
             height: 60px;
             margin-left: 40px;
-            
+
         }
     </style>
     <script>
-           $(document).ready(function () {  
+        $(document).ready(function () {
             listing();    //페이지 로딩 되면 listing 함수 실행
             let rows;
+            console.log(rows)
         });
 
-        function listing() {  
+        function listing() {
             fetch('/webtoon').then((res) => res.json()).then((data) => {
                 rows = data['result']
-                $('#cards-box').empty()           
+                $('#cards-box').empty()
 
                 rows.forEach((a) => {
-                   
-                    let img = a['image']
+                    console.log(a)
+                    console.log('aaaaaaaaaa')
+                    let img = a['img']
                     let title = a['title']
-                    let description = a['desc']              
-                    
+                    let description = a['desc']
+                    let toonId = a['_id']
+                    fetch('/toonId_get', { method: "POST", body: toonId, }).then((res) => res.json()).then((data) => {
+                    });
 
-                    let temp_html =`<div class="card">
+
+                    let temp_html = `<div class="card">
                                         <img src="${img}" /> <!--이미지 -->
                                         <h5 class="toontitle">>${title}</h5>
                                         <p class="summary">${description}</p>
-                                        <button class="viewbutton" onclick = 'window.location.href = "/toon?id=${a['_id']}"'>리뷰보기</button>
-                                    </div>`                                                                    
+                                        <button class="viewbutton" onclick = 'window.location.href = "/toon?${a['_id']}"'>리뷰보기</button>
+                                    </div>`
                     $('#cards-box').append(temp_html)     //메인페이지에 리뷰버튼 _id값뒤에 반영                                     
-                })                
-            })                     
+                })
+            })
         }
 
     </script>
 
-    
+
 </head>
 
 <body>
@@ -108,15 +126,15 @@
         src="https://newsimg.hankookilbo.com/cms/articlerelease/2020/07/20/bc394b7b-7019-4425-bc46-2677519e9580.jpg">
         <h1>SHOW ME THE TOON</h1>
     </div>
-    <div id="cards-box">
+    <div class="card-box " id="cards-box">
         <div class="card">
             <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" /> <!--이미지 -->
             <h5 class="toontitle">여기에 영화제목이 들어갑니다.</h5>
             <p class="summary">줄거리가 들어갑니다줄거리가 들어갑니다줄거리가 들어갑니다줄거리가 들어갑니다줄거리가 들어갑니다줄거리가 들어갑니다</p>
-            <button class="viewbutton" onclick = 'window.location.href = "/toon"' >리뷰보기</button>
-        </div>       
+            <button class="viewbutton" onclick='window.location.href = "/toon"'>리뷰보기</button>
+        </div>
     </div>
-    
+
 </body>
 
 </html>
