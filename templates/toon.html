@@ -48,6 +48,16 @@
             border: 2px solid white;
         }
 
+        .mypost2 {
+            width: 95%;
+            max-width: 500px;
+            margin: 20px auto 0px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+            display: none;
+        }
+
         .mycomment {
             color: gray;
         }
@@ -169,6 +179,29 @@
                 alert(data['msg'])
             })
         }
+        
+        //////////////삭제 function//////////
+
+        // function delete() {         
+                        //_id, pw 입력
+            // console.log(_id, pw)
+
+            // let formData = new FormData();
+            // formData.append('comment_id_give', _id);
+            // formData.append('pw_give', pw);
+
+            // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+
+            //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
+            //         alert(data['msg'])
+            //     }else{
+            //         alert(data['msg'])
+            //     window.location.reload()
+            //     }                            
+            // })
+        // }
+        ///////////////////////
+
 
         function open_box() {
             $('#post-box').show()
@@ -176,6 +209,15 @@
         function close_box() {
             $('#post-box').hide()
         }
+
+        function pw_check(){
+            $('#delete-box').show()
+        }
+
+        function close_box2(){
+            $('#delete-box').hide()
+        }
+
     </script>
 </head>
 
@@ -209,6 +251,23 @@
             <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
         </div>
     </div>
+
+<!-- ////////////////////////삭제하기 버튼 누르면 PW확인창////////////////////////////////////// -->
+<div class="mypost2" id="delete-box">
+     
+    <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-sm">PW를 입력하세요</span>
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+      
+    <div class="mybtns">           
+        <button onclick="delete()" type="button" class="btn btn-light">삭제하기</button> 
+        <button onclick="close_box2()" type="button" class="btn btn-outline-dark">취소</button>
+    </div>   
+</div>
+ <!--///////////////  onclick="delete('${a['_id']}','${a['pw']}')" 가 되어야함 ///////////////////-->
+
+
     <div class="page-frame">
         <div class="toon-frame">
             <div class="toon-card">
@@ -231,11 +290,11 @@
                             <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                         </div>
                         <div class="comment-button-group md-2">
-                            <button class="comment-button">삭제하기</button>
+                            <button onclick ="pw_check()" class="comment-button">삭제하기</button>
                             <button class="comment-button">수정하기</button>
                         </div>
                     </div>
-                <!-- </div> -->
+                <!--/////이것까지 전부 마지막에 temp_html로 하고 append해야할듯///// -->
             </div>
         </div>
     </div>
