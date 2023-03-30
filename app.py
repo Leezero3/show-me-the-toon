@@ -15,6 +15,27 @@ def home():
 def review():    
     return render_template('toon.html')
 
+##################################################################상우님
+@app.route("/review", methods=["POST"])
+
+def mars_post():
+    name_receive = request.form['name_give'] #데이터를 찾음
+    pw_receive = request.form['password_give']
+    star_receive = request.form['star_give']
+    comment_receive = request.form['comment_give']
+    toonid_receive = request.form['toonid_give']
+
+
+    doc = {
+        'name':name_receive,
+        'pw':pw_receive,
+        'star':star_receive,
+        'comment':comment_receive,
+        'toonid':toonid_receive
+    }##파이몽고에 넣기 위함
+    db.comment.insert_one(doc)#mars로 이름변경
+    return jsonify({'msg':'저장완료'})#메세지를 내려줌(직관적이게 저장완료로 바꿔줌)
+
 ##################################################################
 @app.route("/review:commentid", methods=["POST"])
 def comment_del():

@@ -166,13 +166,13 @@
     </style>
     <script>
         $(document).ready(function () {
-            posting();
+            get_webtoon();
             // listing();
             //페이지 로딩 되면 listing 함수 실행
             //let rows;
             //console.log(rows)
         });
-        function posting() {
+        function get_webtoon() {
             // console.log(window.location.search)
             let str = window.location.search
             // let objectId = str.slice(1).toString();
@@ -202,8 +202,31 @@
 
         }
 
+        //---------------------------------------------------------------------- 상우님
+        function posting() {
+            let name = $('#name').val()//홈페이지에서 인풋내용을 가져오게 함,/mar로 날림
+            let pw = $('#password').val()
+            let star = $('#star').val()
+            let comment = $('#comment').val()
+            let str = window.location.search
+            // let objectId = str.slice(1).toString();
+            let objectId = str.slice(1);
+        
+            // console.log(urlParams)
+            //console.log()
 
+            let formData = new FormData();
+            formData.append("name_give", name);//name,address,size데이터를 주게함
+            formData.append("password_give", pw)
+            formData.append("star_give", star)
+            formData.append("comment_give", comment)
+            formData.append("toonid_give", objectId)
 
+            fetch('/review', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                alert(data["msg"]);
+                window.location.reload()//입력하면 새로고침 되도록 함
+            });
+        }
 
 
 
@@ -327,12 +350,16 @@
     </div>
     <div class="mypost" id="post-box">
         <div class="form-floating mb-3">
-            <textarea id="name" class="form-control" placeholder="닉네임을 입력해 주세요."></textarea>
+            <textarea id="name" class="form-control" placeholder="닉네임을 입력해주세요."></textarea>
             <label for="floatingTextarea2">닉네임</label>
         </div>
         <div class="form-floating mb-3">
-            <textarea id="comment" class="form-control" placeholder="코멘트를 남겨 주세요."></textarea>
+            <textarea id="comment" class="form-control" placeholder="코멘트를 남겨주세요."></textarea>
             <label for="floatingTextarea2">코멘트</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea id="password" class="form-control" placeholder="비밀번호를 남겨주세요 ."></textarea>
+            <label for="floatingTextarea2">비밀번호</label>
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text" for="inputGroupSelect01">별점</label>
