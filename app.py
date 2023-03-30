@@ -3,7 +3,9 @@ app = Flask(__name__)
 from pymongo import MongoClient
 from bson import json_util
 import certifi
+
 from bson.objectid import ObjectId
+
 
 db = client.dbsparta
 
@@ -37,14 +39,14 @@ def mars_post():
     return jsonify({'msg':'저장완료'})#메세지를 내려줌(직관적이게 저장완료로 바꿔줌)
 
 ##################################################################
-@app.route("/review:commentid", methods=["POST"])
+@app.route("/review-delete", methods=["POST"])
 def comment_del():
 
     del_pw = request.form['pw_give']
-    del_id = request.form['commentid_give']
+    del_id = request.form['comment_id_give']
 
-    # print(del_id)   
-    # print(del_pw) 
+    print(del_id)   
+    print(del_pw) 
     find_one = db.comment.find_one({'_id': ObjectId(del_id),'pw':del_pw})  #comment 이름의 DB에서 Id, pw값일치하는 것 찾기
 
     # print(find_one) x
@@ -88,6 +90,20 @@ def toon_get():
     return json_util.dumps(toon)
 @app.route("/commentrender", methods=["POST"])
 def comment_get():
+
+# final  
+      
+
+    objectId = request.form['objectId_give']
+    print(objectId)
+    comment = list(db.comment.find({'toonid':objectId}))
+    
+    for mv in comment:
+        mv["_id"] = str(mv["_id"])  #이렇게 하니 id 값도 넘어감
+    print(comment)
+    return jsonify(comment)
+
+
     objectId = request.form['objectId_give']
     print(objectId)
     comment = list(db.comment.find({'toonid':objectId},{'_id':False}))
@@ -96,6 +112,7 @@ def comment_get():
 
 # 여러개 찾기 - 예시 ( _id 값은 제외하고 출력)
 # all_users = list(db.users.find({},{'_id':False}))
+# main
 
 
 

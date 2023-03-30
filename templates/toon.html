@@ -169,9 +169,10 @@
             get_webtoon();
             // listing();
             //페이지 로딩 되면 listing 함수 실행
-            //let rows;
+            let rows;
             //console.log(rows)
         });
+
         function get_webtoon() {
             // console.log(window.location.search)
             let str = window.location.search
@@ -184,11 +185,11 @@
 
             fetch('/toonrender', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
                 // alert(data['result'])
-                console.log(data['comment'])
+
+                // console.log(data['comment'])
                 $('#card-box').empty()
                 $('#cards-box').empty()
-                let toon = data['toon']
-                
+                let toon = data['toon']             
                 
 
                 let title = data['title']
@@ -206,36 +207,48 @@
 
                             })
                 fetch('/commentrender', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-                    
-                    let rows = data
-                    console.log(data['name'])
+
+                    rows = data
+                    // console.log(rows)   // 아래의 데이터 전부 콘솔에 뜸  
                     rows.forEach((a)=> {
-                        let com_pw = a['pw']
+                        // let com_pw = a['pw']
                         let star = a['star']
-                        console.log(star)
+                      
                         let star_repeat = '⭐'.repeat(star)
                         let name = a['name']
-                        let comment = a['comment']
-                        let comment_html = `<div class="card mb-4" id="cards-box">
+                        let comment = a['comment'] 
+                        let _id = a['_id']
+                        // let pw = $('#password2').val()    
+                        let pw = a['pw']
+                        // console.log(pw) // pw찍힘
+                        // console.log(_id)
+                        // console.log(com_pw)
+                        // console.log(pw)
+
+
+                        let comment_html = `                                        
+                                         <div class="card mb-4" id="comment-box"> 
                                                 <div class="card-body">
                                                 <p class="card-text">닉네임 : ${name}</p>
                                                 <p class="card-text">별점 : ${star_repeat}</p>
-                                                <p class="card-text">리뷰 : ${comment}</p>
-                        
-                                                <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
-                                                </div>
-                                                <div class="comment-button-group md-2">
-                                                <button onclick="pw_check()" class="comment-button">삭제하기</button>
-                                                <button class="comment-button">수정하기</button>
-                                                </div>
-                                            </div>`
+                                                <p class="card-text">리뷰 : ${comment}</p>                                                                        
+                                               
+                                                <div class="input-group mb-3">
+                                                    <div class="form-floating mb-3">
+                                                    <textarea id="password2" class="form-control" placeholder="비밀번호를 남겨주세요 ."></textarea>
+                                                    <label for="floatingTextarea2">비밀번호</label>                                                
+                                                    <button class="btn btn-outline-secondary" onclick="dele('${a['_id']}','${'pw'}')" type="button" id="button-addon2">삭제하기</button>
+                                                </div>    
+                                                </div>    
+                                                                                                                         
+                                             `                                   
+                                              
                         $('#cards-box').append(comment_html)
+                })                
 
-                })
-                
             })
-
         }
+     
 
         //---------------------------------------------------------------------- 상우님
         function posting() {
@@ -263,12 +276,34 @@
             });
         }
 
+        
+          //////////삭제 function////////// 
 
+            function dele(_id,pw) {    
+            pw = $('#password2').val()     
+            // _id, pw 입력
+            console.log(_id)
+            console.log(pw)
 
+            let formData = new FormData();
+            formData.append('comment_id_give', _id);
+            formData.append('pw_give', pw);
 
+            fetch('/review-delete', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+
+                if(data['msg'] == 'pw가 일치하지 않습니다.'){
+                    alert(data['msg'])
+                    window.location.reload()//입력하면 새로고침 되도록 함
+                }else{
+                    alert(data['msg'])
+                window.location.reload()
+                } 
+
+            });
+        }
 
         // function delete() {         
-        //_id, pw 입력
+        // _id, pw 입력
         // console.log(_id, pw)
 
         // let formData = new FormData();
@@ -336,29 +371,7 @@
         //         alert(data['msg'])
         //     })
         // }
-
-        //////////////삭제 function////////// ----------------------------체크!
-
-        // function delete() {         
-        //_id, pw 입력
-        // console.log(_id, pw)
-
-        // let formData = new FormData();
-        // formData.append('comment_id_give', _id);
-        // formData.append('pw_give', pw);
-
-        // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-
-        //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
-        //         alert(data['msg'])
-        //     }else{
-        //         alert(data['msg'])
-        //     window.location.reload()
-        //     }                            
-        // })
-        // }
-        ///////////////////////
-
+        /////
 
         function open_box() {
             $('#post-box').show()
@@ -367,13 +380,13 @@
             $('#post-box').hide()
         }
 
-        function pw_check() {
-            $('#delete-box').show()
-        }
+        // function pw_check() {
+        //     $('#delete-box').show()
+        // }
 
-        function close_box2() {
-            $('#delete-box').hide()
-        }
+        // function close_box2() {
+        //     $('#delete-box').hide()
+        // }
 
     </script>
 </head>
@@ -414,7 +427,8 @@
     </div>
 
     <!-- ////////////////////////삭제하기 버튼 누르면 PW확인창////////////////////////////////////// -->
-    <div class="mypost2" id="delete-box">
+
+    <!-- <div class="mypost2" id="delete-box">
 
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="inputGroup-sizing-sm">PW를 입력하세요</span>
@@ -423,10 +437,11 @@
         </div>
 
         <div class="mybtns">
-            <!-- <button onclick="delete()" type="button" class="btn btn-light">삭제하기</button>  -->
+            <button onclick="delete(rows)" type="button" class="btn btn-light">삭제하기</button> 
             <button onclick="close_box2()" type="button" class="btn btn-outline-dark">취소</button>
         </div>
-    </div>
+    </div> -->
+
     <!--///////////////  onclick="delete('${a['_id']}','${a['pw']}')" 가 되어야함 ///////////////////-->
 
 
@@ -441,24 +456,52 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- 이부분이 script안에서 temphtml로 찍혀야 할듯 -->
+
+
+        <!-- `<div class="card mb-4" id="comment-box"> 
+            <div class="card-body">
+            <p class="card-text">닉네임 : ${name}</p>
+            <p class="card-text">별점 : ${star_repeat}</p>
+            <p class="card-text">리뷰 : ${comment}</p>                                                                        
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="PW를 입력하세요" aria-label="" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" onclick="delete('${rows}')" type="button" id="button-addon2">삭제하기</button>
+                </div>
+        
+
+            // <div class="comment-button-group md-2">
+            // <button onclick="pw_check('${rows}')" class="comment-button">삭제하기</button>
+            // </div>
+        </div>` -->
+
         <div class="mycards">
             <div class="card mb-4" id="cards-box">
-                <!-- <div class="row"> -->
+
+                <!-- <div class="row">
+
                 <div class="card-context col", id="comment-box">
                     <div class="card-body">
                         <p class="card-text">닉네임 : </p>
                         <p class="card-text">별점 : </p>
                         <p class="card-text">리뷰 : </p>
+                        <div class="input-group mb-3">
+                            <textarea id="password2" class="form-control" placeholder="비밀번호를 남겨주세요 ."></textarea>
+                            <button class="btn btn-outline-secondary" onclick="delete(rows)" type="button" id="button-addon2">삭제하기</button>
+                        </div> -->
 
-                        <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                        <!-- <p class="card-text"><small class="text-muted"></small></p>
                     </div>
                     <div class="comment-button-group md-2">
-                        <button onclick="pw_check()" class="comment-button">삭제하기</button>
-                        <button class="comment-button">수정하기</button>
+                        <button onclick="pw_check(rows)" class="comment-button">삭제하기</button>                       
                     </div>
-                </div>
-                <!--/////이것까지 전부 마지막에 temp_html로 하고 append해야할듯///// -->
-                
+
+                </div> -->
+         <!-- /////이것까지 전부 마지막에 temp_html로 하고 append해야할듯///// -->
+
             </div>
         </div>
     </div>
