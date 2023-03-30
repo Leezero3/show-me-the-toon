@@ -4,6 +4,9 @@ from pymongo import MongoClient
 from bson import json_util
 import certifi
 
+from bson.objectid import ObjectId
+
+
 db = client.dbsparta
 
 @app.route('/')
@@ -88,7 +91,7 @@ def toon_get():
 @app.route("/commentrender", methods=["POST"])
 def comment_get():
 
-   
+# final  
       
 
     objectId = request.form['objectId_give']
@@ -100,6 +103,16 @@ def comment_get():
     print(comment)
     return jsonify(comment)
 
+
+    objectId = request.form['objectId_give']
+    print(objectId)
+    comment = list(db.comment.find({'toonid':objectId},{'_id':False}))
+    print(comment)
+    return jsonify(comment)
+
+# 여러개 찾기 - 예시 ( _id 값은 제외하고 출력)
+# all_users = list(db.users.find({},{'_id':False}))
+# main
 
 
 

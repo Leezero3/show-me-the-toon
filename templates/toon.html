@@ -185,11 +185,13 @@
 
             fetch('/toonrender', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
                 // alert(data['result'])
+
                 // console.log(data['comment'])
                 $('#card-box').empty()
                 $('#cards-box').empty()
                 let toon = data['toon']             
                 
+
                 let title = data['title']
                 let image = data['img']
                 let desc = data['desc']
@@ -205,7 +207,7 @@
 
                             })
                 fetch('/commentrender', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-                    
+
                     rows = data
                     // console.log(rows)   // 아래의 데이터 전부 콘솔에 뜸  
                     rows.forEach((a)=> {
@@ -243,6 +245,7 @@
                                               
                         $('#cards-box').append(comment_html)
                 })                
+
             })
         }
      
@@ -477,7 +480,9 @@
 
         <div class="mycards">
             <div class="card mb-4" id="cards-box">
+
                 <!-- <div class="row">
+
                 <div class="card-context col", id="comment-box">
                     <div class="card-body">
                         <p class="card-text">닉네임 : </p>
@@ -493,9 +498,10 @@
                     <div class="comment-button-group md-2">
                         <button onclick="pw_check(rows)" class="comment-button">삭제하기</button>                       
                     </div>
+
                 </div> -->
          <!-- /////이것까지 전부 마지막에 temp_html로 하고 append해야할듯///// -->
-                
+
             </div>
         </div>
     </div>
