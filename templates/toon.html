@@ -184,12 +184,17 @@
 
             fetch('/toonrender', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
                 // alert(data['result'])
-                console.log(data)
+                console.log(data['comment'])
                 $('#card-box').empty()
+                $('#cards-box').empty()
+                let toon = data['toon']
+                
+                
+
                 let title = data['title']
                 let image = data['img']
                 let desc = data['desc']
-                let temp_html = `<div class="toon-card">
+                let toon_html = `<div class="toon-card">
                                     <img src=${image}
                                         class="img-fluid card-img-top" alt="...">
                                     <div class="card-body">
@@ -197,7 +202,37 @@
                                         <p class="toon-explain">${desc}</p>
                                     </div>
                                 </div>`
-                $('#card-box').append(temp_html)
+                $('#card-box').append(toon_html)
+
+                            })
+                fetch('/commentrender', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+                    
+                    let rows = data
+                    console.log(data['name'])
+                    rows.forEach((a)=> {
+                        let com_pw = a['pw']
+                        let star = a['star']
+                        console.log(star)
+                        let star_repeat = '⭐'.repeat(star)
+                        let name = a['name']
+                        let comment = a['comment']
+                        let comment_html = `<div class="card mb-4" id="cards-box">
+                                                <div class="card-body">
+                                                <p class="card-text">닉네임 : ${name}</p>
+                                                <p class="card-text">별점 : ${star_repeat}</p>
+                                                <p class="card-text">리뷰 : ${comment}</p>
+                        
+                                                <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+                                                </div>
+                                                <div class="comment-button-group md-2">
+                                                <button onclick="pw_check()" class="comment-button">삭제하기</button>
+                                                <button class="comment-button">수정하기</button>
+                                                </div>
+                                            </div>`
+                        $('#cards-box').append(comment_html)
+
+                })
+                
             })
 
         }
@@ -409,7 +444,7 @@
         <div class="mycards">
             <div class="card mb-4" id="cards-box">
                 <!-- <div class="row"> -->
-                <div class="card-context col">
+                <div class="card-context col", id="comment-box">
                     <div class="card-body">
                         <p class="card-text">닉네임 : </p>
                         <p class="card-text">별점 : </p>
@@ -423,7 +458,7 @@
                     </div>
                 </div>
                 <!--/////이것까지 전부 마지막에 temp_html로 하고 append해야할듯///// -->
-                <div id="cards-box"></div>
+                
             </div>
         </div>
     </div>
