@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>쇼미더툰</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>쇼미더무비</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
@@ -93,22 +96,30 @@
 
                 rows.forEach((a) => {
 
-                    let img = a['image']
+                    let img = a['img']
                     let title = a['title']
                     let description = a['desc']
+                    let toonId = a['_id']
+                    fetch('/toonId_get', { method: "POST", body: toonId, }).then((res) => res.json()).then((data) => {
+                    });
+
 
 
                     let temp_html = `<div class="card">
                                         <img src="${img}" /> <!--이미지 -->
                                         <h5 class="toontitle">>${title}</h5>
                                         <p class="summary">${description}</p>
-                                        <button class="viewbutton" onclick = 'window.location.href = "/toon?id=${a['_id']}"'>리뷰보기</button>
+
+                                        <button class="viewbutton" onclick = 'window.location.href = "/toon?${a['_id']}"'>리뷰보기</button>
+
                                     </div>`
                     $('#cards-box').append(temp_html)     //메인페이지에 리뷰버튼 _id값뒤에 반영                                     
                 })
             })
         }
+
     </script>
+
 </head>
 
 <body>
@@ -116,6 +127,7 @@
         src="https://newsimg.hankookilbo.com/cms/articlerelease/2020/07/20/bc394b7b-7019-4425-bc46-2677519e9580.jpg">
         <h1>SHOW ME THE TOON</h1>
     </div>
+
     <div class=review-box>
         <div id="cards-box">
             <div class="card">
@@ -160,7 +172,9 @@
             </div>
         </div>
     </div>
+
     </div>
+
 </body>
 
 

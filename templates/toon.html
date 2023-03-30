@@ -160,27 +160,86 @@
     </style>
     <script>
         $(document).ready(function () {
-            listing();
+            listing();    //페이지 로딩 되면 listing 함수 실행
+            let rows;
+            console.log(rows)
         });
 
         function listing() {
-            fetch('/review').then((res) => res.json()).then((data) => {
-                console.log(data)
-                alert(data['msg'])
-            })
+
+            console.log(window.location.search)
+
+            // function delete() {         
+                        //_id, pw 입력
+            // console.log(_id, pw)
+
+            // let formData = new FormData();
+            // formData.append('comment_id_give', _id);
+            // formData.append('pw_give', pw);
+
+            // fetch('/review:commentid', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
+
+            //     if(data['msg'] == 'pw가 일치하지 않습니다.'){
+            //         alert(data['msg'])
+            //     }else{
+            //         alert(data['msg'])
+            //     window.location.reload()
+            //     }                            
+            // })
+        // }
+
+            // fetch('/tooncomment').then((res) => res.json()).then((data) => {
+            //     rows = data['result']
+            //     $('#cards-box').empty()
+
+            //     rows.forEach((a) => {
+            //         console.log(a)
+            //         console.log('aaaaaaaaaa')
+            //         let img = a['img']
+            //         let title = a['title']
+            //         let description = a['desc']
+            //         let toonId = a['_id']
+            //         fetch('/toonId_get', { method: "POST", body: toonId, }).then((res) => res.json()).then((data) => {
+            //         });
+                    
+
+            //         let temp_html = `<div class="card">
+            //                             <img src="${img}" /> <!--이미지 -->
+            //                             <h5 class="toontitle">>${title}</h5>
+            //                             <p class="summary">${description}</p>
+            //                             <button class="viewbutton" onclick = 'window.location.href = "/toon?id=${a['_id']}"'>리뷰보기</button>
+            //                         </div>`
+            //         $('#cards-box').append(temp_html)     //메인페이지에 리뷰버튼 _id값뒤에 반영                                     
+            //     })
+            // })
         }
 
+
+
+
+        // -------------------- 대기
+        // $(document).ready(function () {
+        //     listing();
+        // });
+
+        // function listing() {
+        //     fetch('/review').then((res) => res.json()).then((data) => {
+        //         console.log(data)
+        //         alert(data['msg'])
+        //     })
+        // }
+    
         function posting() {
             let formData = new FormData();
             formData.append("sample_give", "샘플데이터");
 
             fetch('/review', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-                console.log(data)
+                // console.log(data)
                 alert(data['msg'])
             })
         }
         
-        //////////////삭제 function//////////
+        //////////////삭제 function////////// ----------------------------체크!
 
         // function delete() {         
                         //_id, pw 입력
@@ -261,7 +320,7 @@
       </div>
       
     <div class="mybtns">           
-        <button onclick="delete()" type="button" class="btn btn-light">삭제하기</button> 
+        <!-- <button onclick="delete()" type="button" class="btn btn-light">삭제하기</button>  -->
         <button onclick="close_box2()" type="button" class="btn btn-outline-dark">취소</button>
     </div>   
 </div>
@@ -287,6 +346,7 @@
                             <p class="card-text">닉네임 : </p>
                             <p class="card-text">별점 : </p>
                             <p class="card-text">리뷰 : </p>
+                            
                             <!-- <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
                         </div>
                         <div class="comment-button-group md-2">
@@ -295,10 +355,12 @@
                         </div>
                     </div>
                 <!--/////이것까지 전부 마지막에 temp_html로 하고 append해야할듯///// -->
+                <div id="cards-box"></div>
             </div>
         </div>
     </div>
     </div>
+    
 </body>
 
 </html>
