@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from bson import json_util
 import certifi
 from bson.objectid import ObjectId
-client = MongoClient('mongodb+srv://sparta:test@cluster0.fjodnaz.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
+
 db = client.dbsparta
 
 @app.route('/')
