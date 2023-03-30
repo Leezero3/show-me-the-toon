@@ -53,7 +53,7 @@ def comment_del():
         db.comment.delete_one({'_id': ObjectId(del_id),'pw':del_pw})  
         return jsonify({'msg':'삭제완료'})
     else:        
-         return jsonify({'msg':'pw가 일치하지 않습니다.'})    
+        return jsonify({'msg':'pw가 일치하지 않습니다.'})    
 ####################메인화면 시작하면 보내는 GET#####################################
 
 @app.route("/webtoon", methods=["GET"])
@@ -79,9 +79,23 @@ def tooncomment_get():
 def toon_get():
     objectId = request.form['objectId_give']
     toon = db.toons.find_one({'_id':ObjectId(objectId)})
-    print(toon)
+    # comment = db.comment.find({'toonid':ObjectId(objectId)})
+    # comment_list = [comment_dict for comment_dict in comment]
+    # result = {'toon': toon, 'comment': comment_list}
+    
+    #print(toon)
     # return jsonify(json_util.dumps({'result':toon}))
     return json_util.dumps(toon)
+@app.route("/commentrender", methods=["POST"])
+def comment_get():
+    objectId = request.form['objectId_give']
+    print(objectId)
+    comment = list(db.comment.find({'toonid':objectId},{'_id':False}))
+    print(comment)
+    return jsonify(comment)
+
+# 여러개 찾기 - 예시 ( _id 값은 제외하고 출력)
+# all_users = list(db.users.find({},{'_id':False}))
 
 
 
