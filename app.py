@@ -3,8 +3,7 @@ app = Flask(__name__)
 from pymongo import MongoClient
 from bson import json_util
 import certifi
-from bson.objectid import ObjectId
-client = MongoClient('mongodb+srv://sparta:test@cluster0.fjodnaz.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
+
 db = client.dbsparta
 
 @app.route('/')
@@ -37,14 +36,14 @@ def mars_post():
     return jsonify({'msg':'저장완료'})#메세지를 내려줌(직관적이게 저장완료로 바꿔줌)
 
 ##################################################################
-@app.route("/review:commentid", methods=["POST"])
+@app.route("/review-delete", methods=["POST"])
 def comment_del():
 
     del_pw = request.form['pw_give']
-    del_id = request.form['commentid_give']
+    del_id = request.form['comment_id_give']
 
-    # print(del_id)   
-    # print(del_pw) 
+    print(del_id)   
+    print(del_pw) 
     find_one = db.comment.find_one({'_id': ObjectId(del_id),'pw':del_pw})  #comment 이름의 DB에서 Id, pw값일치하는 것 찾기
 
     # print(find_one) x
@@ -53,7 +52,7 @@ def comment_del():
         db.comment.delete_one({'_id': ObjectId(del_id),'pw':del_pw})  
         return jsonify({'msg':'삭제완료'})
     else:        
-         return jsonify({'msg':'pw가 일치하지 않습니다.'})    
+        return jsonify({'msg':'pw가 일치하지 않습니다.'})    
 ####################메인화면 시작하면 보내는 GET#####################################
 
 @app.route("/webtoon", methods=["GET"])
@@ -79,9 +78,28 @@ def tooncomment_get():
 def toon_get():
     objectId = request.form['objectId_give']
     toon = db.toons.find_one({'_id':ObjectId(objectId)})
-    print(toon)
+    # comment = db.comment.find({'toonid':ObjectId(objectId)})
+    # comment_list = [comment_dict for comment_dict in comment]
+    # result = {'toon': toon, 'comment': comment_list}
+    
+    #print(toon)
     # return jsonify(json_util.dumps({'result':toon}))
     return json_util.dumps(toon)
+@app.route("/commentrender", methods=["POST"])
+def comment_get():
+
+   
+      
+
+    objectId = request.form['objectId_give']
+    print(objectId)
+    comment = list(db.comment.find({'toonid':objectId}))
+    
+    for mv in comment:
+        mv["_id"] = str(mv["_id"])  #이렇게 하니 id 값도 넘어감
+    print(comment)
+    return jsonify(comment)
+
 
 
 
